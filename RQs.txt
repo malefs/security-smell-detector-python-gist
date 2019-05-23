@@ -4,7 +4,7 @@ total parseable gists: 5822
 RQ1:
 Yes. 
 Total Smell Instances: 9332
-gists with at least one smells: 2575
+gists with at least one smells: 2210
 
 
 RQ2:
@@ -16,13 +16,13 @@ smells: OrderedSet(['shell_injection', 'assert_used', 'empty_password', 'exec_us
 +----------------------+-----------+---------+------------+
 |   shell_injection    |    1279   |   3.29  |    7.88    |
 |     assert_used      |    946    |   2.43  |    5.34    |
-|    empty_password    |     31    |   0.08  |    0.52    |
+|    empty_password    |     25    |   0.06  |    0.43    |
 |      exec_used       |     11    |   0.03  |    0.17    |
 |      debug_true      |     35    |   0.09  |    0.60    |
 | hardcoded_interface  |     47    |   0.12  |    0.74    |
-|   hardcoded_secret   |    3926   |  10.10  |   18.65    |
+|   hardcoded_secret   |    263    |   0.68  |    3.35    |
 |    hardcoded_sql     |     43    |   0.11  |    0.50    |
-|    hardcoded_tmp     |    1279   |   3.29  |    7.88    |
+|    hardcoded_tmp     |      87   |   0.22  |    1.10    |
 |  no_integrity_check  |     8     |   0.02  |    0.05    |
 |  no_cert_validation  |     11    |   0.03  |    0.09    |
 | bad_file_permissions |     2     |   0.01  |    0.03    |
@@ -31,10 +31,35 @@ smells: OrderedSet(['shell_injection', 'assert_used', 'empty_password', 'exec_us
 |     use_of_regex     |    724    |   1.86  |    6.44    |
 |  command_injection   |    1093   |   2.81  |   12.28    |
 |      yaml_load       |     16    |   0.04  |    0.19    |
-|        TOTAL         |    9332   |  24.00  |   44.23    |
+|        TOTAL         |    6089   |  15.66  |   37.96    |
 +----------------------+-----------+---------+------------+
 
+=== GITHUB GIST MANUAL INSPECTION ===
+total files checked: 100
++----------------------+-----------+-----------+--------+
+|        smell         | occurence | precision | recall |
++----------------------+-----------+-----------+--------+
+|   shell_injection    |     58    |    1.00   |  1.00  |
+|     assert_used      |     79    |    1.00   |  1.00  |
+|    empty_password    |     2     |    1.00   |  1.00  |
+|      exec_used       |     4     |    1.00   |  1.00  |
+|      debug_true      |     2     |    1.00   |  1.00  |
+| hardcoded_interface  |     3     |    1.00   |  1.00  |
+|   hardcoded_secret   |     31    |    0.94   |  0.91  |
+|    hardcoded_sql     |     3     |    1.00   |  1.00  |
+|    hardcoded_tmp     |     3     |    1.00   |  1.00  |
+|  no_integrity_check  |     7     |    0.43   |  0.75  |
+|  no_cert_validation  |     1     |    1.00   |  1.00  |
+| bad_file_permissions |     1     |    1.00   |  1.00  |
+| ignore_except_block  |     13    |    1.00   |  1.00  |
+|     use_of_http      |     71    |    1.00   |  1.00  |
+|     use_of_regex     |     37    |    0.49   |  1.00  |
+|  command_injection   |     28    |    1.00   |  1.00  |
+|      yaml_load       |     1     |    1.00   |  1.00  |
+|        TOTAL         |    344    |    0.93   |  0.99  |
++----------------------+-----------+-----------+--------+
+
 RQ3:
-Authors with at least one smell in gists are significantly different than authors with no smell in gists
-however, this significance is, (0.029005415005935276, 'negligible')
+Authors with at least one smell in gists are different than authors with no smell in gists
+however, this difference is, (0.03371955222160421, 'negligible')
 

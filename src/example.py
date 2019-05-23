@@ -3,6 +3,24 @@ from pprint import pprint
 from urllib.parse import urlparse
 
 
+dick = {}
+
+dick['admin'] = 'root'
+
+class abc:
+    def __init__(self, un):
+        self.username = un
+        self.dick = {}
+        return
+
+a = abc('gg')
+
+a.dick['password'] = 'pass'
+
+a.username = 'hhh'
+
+password = ''
+
 def foo():
     return 'foo'
 
@@ -17,6 +35,8 @@ DEBUG = True
 
 data = bar(sys.argv[0])
 
+username = bar('fff')
+
 pattern = '[a-z]'
 re.match(pattern, z)
 re.compile(pattern)
@@ -27,6 +47,9 @@ password = 'fff'
 connection = 'http://www.google.com'
 ddd ='http://releases.ubuntu.com/18.04.2/ubuntu-18.04.2-desktop-amd64.iso'
 
+
+# match only x = 'f' type cases
+# match dicionary cases
 
 bar(x)
 
@@ -39,17 +62,41 @@ def main():
 
     hardcodedSecretWords = ['key','id', 'cert', 'root','passno','pass-no', 'pass_no', 'auth_token', 'authetication_token','auth-token', 'authentication-token', 'user', 'uname', 'username', 'user-name', 'user_name', 'owner-name', 'owner_name', 'owner', 'admin', 'login', 'pass', 'pwd', 'password', 'passwd', 'secret', 'uuid', 'crypt', 'certificate', 'userid', 'loginid', 'token', 'ssh_key', 'md5', 'rsa', 'ssl_content', 'ca_content', 'ssl-content', 'ca-content', 'ssh_key_content', 'ssh-key-content', 'ssh_key_public', 'ssh-key-public', 'ssh_key_private', 'ssh-key-private', 'ssh_key_public_content', 'ssh_key_private_content', 'ssh-key-public-content', 'ssh-key-private-content']
     hardcodedPasswords = ['pass', 'pwd', 'password', 'passwd', 'passno', 'pass-no', 'pass_no']
-    for var in analyzer.vars:
-        for item in hardcodedSecretWords:
-            if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()), str(var.id).lower().strip()):
-                if any(x.lineno == var.lineno for x in analyzer.strings):
-                    print('match secret')
+    # for var in analyzer.vars:
+    #     for item in hardcodedSecretWords:
+    #         if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()), str(var.id).lower().strip()):
+    #             if any(x.lineno == var.lineno for x in analyzer.strings):
+    #                 print(f'match secret, {var.lineno}')
 
-    for var in analyzer.vars:
+    for var in analyzer.assign:
+        for item in hardcodedSecretWords:
+            if isinstance(var.targets[0], ast.Name) and isinstance(var.value, ast.Str):
+                if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()), str(var.targets[0].id).lower().strip()):
+                    if len(var.value.s) > 0: print(f'match secret assignment, {var.lineno}')
+            if isinstance(var.targets[0], ast.Attribute) and isinstance(var.value, ast.Str):
+                if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()), str(var.targets[0].attr).lower().strip()):
+                    if len(var.value.s) > 0: print(f'match secret assignment, {var.lineno}')
+            if isinstance(var.targets[0], ast.Subscript) and isinstance(var.value, ast.Str):
+                if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()), str(var.targets[0].slice.value.s).lower().strip()):
+                    if len(var.value.s) > 0: print(f'match secret assignment, {var.lineno}')
+
+    # for var in analyzer.vars:
+    #     for item in hardcodedPasswords:
+    #         if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()), str(var.id).lower().strip()):
+    #             if any(x.lineno == var.lineno and x.s == '' for x in analyzer.strings):
+    #                 print('match empty pass')
+
+    for var in analyzer.assign:
         for item in hardcodedPasswords:
-            if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()), str(var.id).lower().strip()):
-                if any(x.lineno == var.lineno and x.s == '' for x in analyzer.strings):
-                    print('match empty pass')
+            if isinstance(var.targets[0], ast.Name) and isinstance(var.value, ast.Str):
+                if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()), str(var.targets[0].id).lower().strip()):
+                    if var.value.s == '': print(f'empty password, {var.lineno}')
+            if isinstance(var.targets[0], ast.Attribute) and isinstance(var.value, ast.Str):
+                if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()), str(var.targets[0].attr).lower().strip()):
+                    if var.value.s == '': print(f'empty password, {var.lineno}')
+            if isinstance(var.targets[0], ast.Subscript) and isinstance(var.value, ast.Str):
+                if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()), str(var.targets[0].slice.value.s).lower().strip()):
+                    if var.value.s == '': print(f'empty password, {var.lineno}')
 
     for var in analyzer.vars:
         if var.id == 'DEBUG' or var.id == 'DEBUG_PROPAGATE_EXCEPTIONS':
@@ -118,6 +165,8 @@ class Analyzer(ast.NodeVisitor):
         self.strings = []
         self.subscripts = []
         self.calls = []
+        self.attrs = []
+        self.assign = []
 
     def visit_Import(self, node):
         for alias in node.names:
@@ -144,6 +193,15 @@ class Analyzer(ast.NodeVisitor):
     def visit_Call(self, node):
         self.calls.append(node)
         self.generic_visit(node)
+
+    def visit_Attribute(self, node):
+        self.attrs.append(node)
+        self.generic_visit(node)
+
+    def visit_Assign(self, node):
+        self.assign.append(node)
+        self.generic_visit(node)
+
 if __name__ == "__main__":
     main()
 
