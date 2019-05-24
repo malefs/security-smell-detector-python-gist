@@ -5,7 +5,7 @@ import requests, json
 from requests.auth import HTTPBasicAuth
 
 username = 'brokenquark'
-password = 'mousum#06'
+password = '***'
 
 count = 0
 list = []
