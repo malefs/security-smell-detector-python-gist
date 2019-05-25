@@ -225,3 +225,11 @@ pt2.add_row(['yaml_load', '1', '1.00', '1.00'])
 pt2.add_row(['TOTAL', '344', '0.93', '0.99'])
 
 print(pt2)
+
+frequencies = []
+
+for item in gists:
+    frequencies.append(len(item.smells))
+
+for item in frequencies:
+    print(item)
