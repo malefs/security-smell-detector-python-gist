@@ -47,7 +47,7 @@ class Analyzer(ast.NodeVisitor):
         self.generic_visit(node)
 
 def detectSmell(input):
-    dump = open('smell-updated.csv', 'a')
+    dump = open('smell-updated0000.csv', 'a')
     try:
         with open(f'/home/brokenquark/Workspace/ICSME19/gist-src/{input}', "r") as source:
             tree = ast.parse(source.read())
@@ -61,6 +61,31 @@ def detectSmell(input):
 
     hardcodedSecretWords = ['key','id', 'cert', 'root','passno','pass-no', 'pass_no', 'auth_token', 'authetication_token','auth-token', 'authentication-token', 'user', 'uname', 'username', 'user-name', 'user_name', 'owner-name', 'owner_name', 'owner', 'admin', 'login', 'pass', 'pwd', 'password', 'passwd', 'secret', 'uuid', 'crypt', 'certificate', 'userid', 'loginid', 'token', 'ssh_key', 'md5', 'rsa', 'ssl_content', 'ca_content', 'ssl-content', 'ca-content', 'ssh_key_content', 'ssh-key-content', 'ssh_key_public', 'ssh-key-public', 'ssh_key_private', 'ssh-key-private', 'ssh_key_public_content', 'ssh_key_private_content', 'ssh-key-public-content', 'ssh-key-private-content']
     hardcodedPasswords = ['pass', 'pwd', 'password', 'passwd', 'passno', 'pass-no', 'pass_no']
+
+    hardcoded_pass_found = 0
+
+    for var in analyzer.assign:
+        for item in hardcodedPasswords:
+            if isinstance(var.targets[0], ast.Name) and isinstance(var.value, ast.Str):
+                if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()),
+                            str(var.targets[0].id).lower().strip()):
+                    if len(var.value.s) > 0:
+                        hardcoded_pass_found += 1
+                        print(input)
+            if isinstance(var.targets[0], ast.Attribute) and isinstance(var.value, ast.Str):
+                if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()),
+                            str(var.targets[0].attr).lower().strip()):
+                    if len(var.value.s) > 0:
+                        hardcoded_pass_found += 1
+                        print(input)
+            if isinstance(var.targets[0], ast.Subscript) and isinstance(var.value, ast.Str):
+                if isinstance(var.targets[0].slice.value, ast.Str):
+                    if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()),
+                            str(var.targets[0].slice.value.s).lower().strip()):
+                        if len(var.value.s) > 0:
+                            hardcoded_pass_found += 1
+                            print(input)
+
 
     for var in analyzer.assign:
         for item in hardcodedSecretWords:
@@ -138,7 +163,7 @@ def detectSmell(input):
                     if item.func.value.id == 're':
                         dump.write(f'{input}, use of regex, {item.lineno}\n')
 
-    return 0
+    return hardcoded_pass_found
 count = 0
 for dirName, subdirList, fileList in os.walk('/home/brokenquark/Workspace/ICSME19/gist-src'):
     for fileName in fileList:

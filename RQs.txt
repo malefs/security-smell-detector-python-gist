@@ -1,45 +1,34 @@
-total gists: ~10,000
-total parseable gists: 5822
-
-RQ1:
-Yes. 
-Total Smell Instances: 9332
-gists with at least one smells: 2210
-
-
-RQ2:
-smells: OrderedSet(['shell_injection', 'assert_used', 'empty_password', 'exec_used', 'debug_true', 'hardcoded_interface', 'hardcoded_secret', 'hardcoded_sql', 'hardcoded_tmp', 'no_integrity_check', 'no_cert_validation', 'bad_file_permissions', 'ignore_except_block', 'use_of_http', 'use_of_regex', 'command_injection', 'yaml_load'])
-
+/home/brokenquark/Workspace/ICSME19/venv/bin/python /home/brokenquark/Workspace/ICSME19/src/App3.py
+total gists: 5822
+smells: OrderedSet(['shell_injection', 'assert_used', 'empty_password', 'exec_used', 'debug_true', 'hardcoded_interface', 'hardcoded_secret', 'hardcoded_sql', 'hardcoded_tmp', 'no_integrity_check', 'no_cert_validation', 'bad_file_permissions', 'ignore_except_block', 'use_of_http'])
+gists with at least one smells: 2037
 === GITHUB GIST DATA ===
 +----------------------+-----------+---------+------------+
 |        smell         | occurence | density | proportion |
 +----------------------+-----------+---------+------------+
-|   shell_injection    |    1279   |   3.29  |    7.88    |
+|   shell_injection    |    2372   |   6.10  |   17.71    |
 |     assert_used      |    946    |   2.43  |    5.34    |
 |    empty_password    |     25    |   0.06  |    0.43    |
 |      exec_used       |     11    |   0.03  |    0.17    |
 |      debug_true      |     35    |   0.09  |    0.60    |
 | hardcoded_interface  |     47    |   0.12  |    0.74    |
-|   hardcoded_secret   |    263    |   0.68  |    3.35    |
+|   hardcoded_secret   |    689    |   1.77  |    5.84    |
 |    hardcoded_sql     |     43    |   0.11  |    0.50    |
-|    hardcoded_tmp     |      87   |   0.22  |    1.10    |
+|    hardcoded_tmp     |     87    |   0.22  |    1.10    |
 |  no_integrity_check  |     8     |   0.02  |    0.05    |
 |  no_cert_validation  |     11    |   0.03  |    0.09    |
 | bad_file_permissions |     2     |   0.01  |    0.03    |
 | ignore_except_block  |    208    |   0.53  |    2.58    |
 |     use_of_http      |    865    |   2.22  |    8.64    |
-|     use_of_regex     |    724    |   1.86  |    6.44    |
-|  command_injection   |    1093   |   2.81  |   12.28    |
-|      yaml_load       |     16    |   0.04  |    0.19    |
-|        TOTAL         |    6089   |  15.66  |   37.96    |
+|        TOTAL         |    5349   |  13.76  |   34.99    |
 +----------------------+-----------+---------+------------+
-
+Authors with at least one smell in gists are different than authors with no smell in gists
+however, this difference is, (0.028686732697409678, 'negligible')
 === GITHUB GIST MANUAL INSPECTION ===
-total files checked: 100
 +----------------------+-----------+-----------+--------+
 |        smell         | occurence | precision | recall |
 +----------------------+-----------+-----------+--------+
-|   shell_injection    |     58    |    1.00   |  1.00  |
+|   shell_injection    |     86    |    1.00   |  1.00  |
 |     assert_used      |     79    |    1.00   |  1.00  |
 |    empty_password    |     2     |    1.00   |  1.00  |
 |      exec_used       |     4     |    1.00   |  1.00  |
@@ -53,13 +42,9 @@ total files checked: 100
 | bad_file_permissions |     1     |    1.00   |  1.00  |
 | ignore_except_block  |     13    |    1.00   |  1.00  |
 |     use_of_http      |     71    |    1.00   |  1.00  |
-|     use_of_regex     |     37    |    0.49   |  1.00  |
-|  command_injection   |     28    |    1.00   |  1.00  |
-|      yaml_load       |     1     |    1.00   |  1.00  |
-|        TOTAL         |    344    |    0.93   |  0.99  |
+|        TOTAL         |    306    |    0.98   |  0.99  |
 +----------------------+-----------+-----------+--------+
 
-RQ3:
-Authors with at least one smell in gists are different than authors with no smell in gists
-however, this difference is, (0.03371955222160421, 'negligible')
+Process finished with exit code 0
 
+61 hardcoded passwords

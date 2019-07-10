@@ -179,9 +179,6 @@ pt.add_row(['no_cert_validation', f'{NO_CE}', f'{NO_CE/(totalSloc/1000):.2f}', f
 pt.add_row(['bad_file_permissions', f'{BA_PE}', f'{BA_PE/(totalSloc/1000):.2f}', f'{100*BA_PE_AL/totalFiles:.2f}'])
 pt.add_row(['ignore_except_block', f'{IG_EX}', f'{IG_EX/(totalSloc/1000):.2f}', f'{100*IG_EX_AL/totalFiles:.2f}'])
 pt.add_row(['use_of_http', f'{US_HT}', f'{US_HT/(totalSloc/1000):.2f}', f'{100*US_HT_AL/totalFiles:.2f}'])
-pt.add_row(['use_of_regex', f'{US_RE}', f'{US_RE/(totalSloc/1000):.2f}', f'{100*US_RE_AL/totalFiles:.2f}'])
-pt.add_row(['command_injection', f'{CO_IN}', f'{CO_IN/(totalSloc/1000):.2f}', f'{100*CO_IN_AL/totalFiles:.2f}'])
-pt.add_row(['yaml_load', f'{YA_LO}', f'{YA_LO/(totalSloc/1000):.2f}', f'{100*YA_LO_AL/totalFiles:.2f}'])
 pt.add_row(['TOTAL', f'{TOTAL_SMELLS}', f'{TOTAL_SMELLS/(totalSloc/1000):.2f}', f'{100*GISTWITHATLEASTONESMELL/totalFiles:.2f}'])
 
 print(pt)
@@ -205,7 +202,7 @@ print('=== GITHUB GIST MANUAL INSPECTION ===')
 pt2 = PrettyTable()
 
 pt2.field_names = ['smell', 'occurence', 'precision', 'recall']
-pt2.add_row(['shell_injection', '58', '1.00', '1.00'])
+pt2.add_row(['shell_injection', '86', '1.00', '1.00'])
 pt2.add_row(['assert_used', '79', '1.00', '1.00'])
 pt2.add_row(['empty_password', '2', '1.00', '1.00'])
 pt2.add_row(['exec_used', '4', '1.00', '1.00'])
@@ -219,17 +216,14 @@ pt2.add_row(['no_cert_validation',  '1', '1.00', '1.00'])
 pt2.add_row(['bad_file_permissions',  '1', '1.00', '1.00'])
 pt2.add_row(['ignore_except_block',  '13', '1.00', '1.00'])
 pt2.add_row(['use_of_http',  '71', '1.00', '1.00'])
-pt2.add_row(['use_of_regex',  '37', '0.49', '1.00'])
-pt2.add_row(['command_injection',  '28', '1.00', '1.00'])
-pt2.add_row(['yaml_load', '1', '1.00', '1.00'])
-pt2.add_row(['TOTAL', '344', '0.93', '0.99'])
+pt2.add_row(['TOTAL', '306', '0.98', '0.99'])
 
 print(pt2)
 
 frequencies = []
 
-for item in gists:
-    frequencies.append(len(item.smells))
-
-for item in frequencies:
-    print(item)
+# for item in gists:
+#     frequencies.append(len(item.smells))
+#
+# for item in frequencies:
+#     print(item)
