@@ -204,4 +204,3 @@ class Analyzer(ast.NodeVisitor):
 
 if __name__ == "__main__":
     main()
-
