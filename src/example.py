@@ -3,9 +3,9 @@ from pprint import pprint
 from urllib.parse import urlparse
 
 
-dick = {}
+testingDictionary = {}
 
-dick['admin'] = 'root'
+testingDictionary['admin'] = 'root'
 
 class abc:
     def __init__(self, un):
