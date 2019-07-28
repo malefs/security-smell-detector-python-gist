@@ -1,4 +1,8 @@
-import ast, socket, re, sys, argparse
+import ast
+import socket
+import re
+import sys
+import argparse
 from pprint import pprint
 from urllib.parse import urlparse
 
@@ -15,6 +19,7 @@ class abc:
         self.dick = {}
         return
 
+
 a = abc('gg')
 
 a.dick['password'] = 'pass'
@@ -23,12 +28,15 @@ a.username = 'hhh'
 
 password = ''
 
+
 def foo():
+    password = 123
     return 'foo'
 
 
 def bar(input):
     return True
+
 
 x = foo()
 y = argparse.ArgumentParser()
@@ -47,13 +55,14 @@ re.search(pattern, z)
 password = 'fff'
 
 connection = 'http://www.google.com'
-ddd ='http://releases.ubuntu.com/18.04.2/ubuntu-18.04.2-desktop-amd64.iso'
+ddd = 'http://releases.ubuntu.com/18.04.2/ubuntu-18.04.2-desktop-amd64.iso'
 
 
 # match only x = 'f' type cases
 # match dicionary cases
 
 bar(x)
+
 
 def main():
     with open("example.py", "r") as source:
@@ -62,8 +71,10 @@ def main():
     analyzer = Analyzer()
     analyzer.visit(tree)
 
-    hardcodedSecretWords = ['key','id', 'cert', 'root','passno','pass-no', 'pass_no', 'auth_token', 'authetication_token','auth-token', 'authentication-token', 'user', 'uname', 'username', 'user-name', 'user_name', 'owner-name', 'owner_name', 'owner', 'admin', 'login', 'pass', 'pwd', 'password', 'passwd', 'secret', 'uuid', 'crypt', 'certificate', 'userid', 'loginid', 'token', 'ssh_key', 'md5', 'rsa', 'ssl_content', 'ca_content', 'ssl-content', 'ca-content', 'ssh_key_content', 'ssh-key-content', 'ssh_key_public', 'ssh-key-public', 'ssh_key_private', 'ssh-key-private', 'ssh_key_public_content', 'ssh_key_private_content', 'ssh-key-public-content', 'ssh-key-private-content']
-    hardcodedPasswords = ['pass', 'pwd', 'password', 'passwd', 'passno', 'pass-no', 'pass_no']
+    hardcodedSecretWords = ['key', 'id', 'cert', 'root', 'passno', 'pass-no', 'pass_no', 'auth_token', 'authetication_token', 'auth-token', 'authentication-token', 'user', 'uname', 'username', 'user-name', 'user_name', 'owner-name', 'owner_name', 'owner', 'admin', 'login', 'pass', 'pwd', 'password', 'passwd', 'secret', 'uuid', 'crypt',
+                            'certificate', 'userid', 'loginid', 'token', 'ssh_key', 'md5', 'rsa', 'ssl_content', 'ca_content', 'ssl-content', 'ca-content', 'ssh_key_content', 'ssh-key-content', 'ssh_key_public', 'ssh-key-public', 'ssh_key_private', 'ssh-key-private', 'ssh_key_public_content', 'ssh_key_private_content', 'ssh-key-public-content', 'ssh-key-private-content']
+    hardcodedPasswords = ['pass', 'pwd', 'password',
+                          'passwd', 'passno', 'pass-no', 'pass_no']
     # for var in analyzer.vars:
     #     for item in hardcodedSecretWords:
     #         if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()), str(var.id).lower().strip()):
@@ -74,13 +85,16 @@ def main():
         for item in hardcodedSecretWords:
             if isinstance(var.targets[0], ast.Name) and isinstance(var.value, ast.Str):
                 if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()), str(var.targets[0].id).lower().strip()):
-                    if len(var.value.s) > 0: print(f'match secret assignment, {var.lineno}')
+                    if len(var.value.s) > 0:
+                        print(f'match secret assignment, {var.lineno}')
             if isinstance(var.targets[0], ast.Attribute) and isinstance(var.value, ast.Str):
                 if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()), str(var.targets[0].attr).lower().strip()):
-                    if len(var.value.s) > 0: print(f'match secret assignment, {var.lineno}')
+                    if len(var.value.s) > 0:
+                        print(f'match secret assignment, {var.lineno}')
             if isinstance(var.targets[0], ast.Subscript) and isinstance(var.value, ast.Str):
                 if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()), str(var.targets[0].slice.value.s).lower().strip()):
-                    if len(var.value.s) > 0: print(f'match secret assignment, {var.lineno}')
+                    if len(var.value.s) > 0:
+                        print(f'match secret assignment, {var.lineno}')
 
     # for var in analyzer.vars:
     #     for item in hardcodedPasswords:
@@ -92,13 +106,16 @@ def main():
         for item in hardcodedPasswords:
             if isinstance(var.targets[0], ast.Name) and isinstance(var.value, ast.Str):
                 if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()), str(var.targets[0].id).lower().strip()):
-                    if var.value.s == '': print(f'empty password, {var.lineno}')
+                    if var.value.s == '':
+                        print(f'empty password, {var.lineno}')
             if isinstance(var.targets[0], ast.Attribute) and isinstance(var.value, ast.Str):
                 if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()), str(var.targets[0].attr).lower().strip()):
-                    if var.value.s == '': print(f'empty password, {var.lineno}')
+                    if var.value.s == '':
+                        print(f'empty password, {var.lineno}')
             if isinstance(var.targets[0], ast.Subscript) and isinstance(var.value, ast.Str):
                 if re.match(r'[_A-Za-z0-9-]*{text}\b'.format(text=str(item).lower()), str(var.targets[0].slice.value.s).lower().strip()):
-                    if var.value.s == '': print(f'empty password, {var.lineno}')
+                    if var.value.s == '':
+                        print(f'empty password, {var.lineno}')
 
     for var in analyzer.vars:
         if var.id == 'DEBUG' or var.id == 'DEBUG_PROPAGATE_EXCEPTIONS':
@@ -106,7 +123,8 @@ def main():
                 print('debug')
 
     for value in analyzer.strings:
-        download = ['iso', 'tar', 'tar.gz', 'tar.bzip2', 'zip', 'rar', 'gzip', 'gzip2', 'deb', 'rpm', 'sh', 'run', 'bin', 'exe', 'zip', 'rar', '7zip', 'msi', 'bat']
+        download = ['iso', 'tar', 'tar.gz', 'tar.bzip2', 'zip', 'rar', 'gzip', 'gzip2',
+                    'deb', 'rpm', 'sh', 'run', 'bin', 'exe', 'zip', 'rar', '7zip', 'msi', 'bat']
         parsedUrl = urlparse(str(value.s))
         if re.match(
                 r'^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([_\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$',
@@ -160,6 +178,7 @@ def main():
     #         x = 0
     x = 0
 
+
 class Analyzer(ast.NodeVisitor):
     def __init__(self):
         self.imports = []
@@ -203,6 +222,7 @@ class Analyzer(ast.NodeVisitor):
     def visit_Assign(self, node):
         self.assign.append(node)
         self.generic_visit(node)
+
 
 if __name__ == "__main__":
     main()
